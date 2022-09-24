@@ -3,40 +3,38 @@
  *
  */
 const navUl = document.getElementById("navbar__list"),
-  sections = document.getElementsByTagName("section"),
-  fragment = document.createDocumentFragment();
-
+  sects = document.querySelectorAll("section"),
+  offscreenNode = document.createDocumentFragment();
 /**
  * End Global Variables
  */
 
 // build nav
 function navMenu() {
-  sections.forEach(function (section) {
-    const idSection = section.getAttribute("id");
-    const titleSection = section.getAttribute("data-nav");
+  sects.forEach(function (sect) {
+    const idpageSection = sect.getAttribute("id");
+    const titlepageSection = sect.getAttribute("data-nav");
     const listItem = document.createElement("li");
-    const link = document.createElement("a");
-    // set link  href to #idSect
-    link.href = `#${idSection}`;
-    // class of link is "menu__link"
-    link.classList.add("menu__link");
-    link.textContent = titleSection;
-    // Scroll to section on link click
-    link.addEventListener("click", function (e) {
+    const hyperLink = document.createElement("a");
+    // set hyperLink  href to #idSect
+    hyperLink.setAttribute("href", "#" + idpageSection);
+    // class of hyperLink is "menu__link"
+    hyperLink.classList.add("menu__link");
+    hyperLink.textContent = titlepageSection;
+    // Scroll to pageSection on hyperLink click
+    hyperLink.addEventListener("click", function (evt) {
       //prevent default behavior
-      e.preventDefault();
+      evt.preventDefault();
       // scroll becomes smooth
-      section.scrollIntoView({ behavior: "smooth" });
+      sect.scrollIntoView({ behavior: "smooth" });
     });
-    //append link to list item
-    listItem.appendChild(link);
+    //append hyperLink to list item
+    listItem.appendChild(hyperLink);
     //append list item to fragment
-    fragment.appendChild(listItem);
+    offscreenNode.appendChild(listItem);
   });
   //append fragment to nav
-
-  navUl.appendChild(fragment);
+  navUl.appendChild(offscreenNode);
 }
 //load the nav on load window
 window.addEventListener("load", navMenu);
@@ -44,20 +42,15 @@ window.addEventListener("load", navMenu);
 
 // Scroll to anchor ID using scrollTO event
 window.addEventListener("scroll", function () {
-  for (const section of sections) {
+  for (const sect of sects) {
     // Detect the element location relative to the viewport using .getBoundingClientRect()
-    const topSection = section.getBoundingClientRect().top;
-    const activeLink = navUl.querySelector(`a[href='#${section.id}']`);
-    if (topSection > 0 && topSection < 250) {
-      // Add class 'your-active-class' to section when near top of viewport
-      section.classList.add("your-active-class");
-      // Add class 'activeLink' to link when near top of viewport
-      activeLink.classList.add("activeLink");
-    } else {
-      // Add remove 'your-active-class' to section when near top of viewport
-      section.classList.remove("your-active-class");
-      // remove class 'activeLink' to link when near top of viewport
-      activeLink.classList.remove("activeLink");
-    }
+    const toppageSection = sect.getBoundingClientRect().top;
+    const activehyperLink = navUl.querySelector(`a[href='#${sect.id}']`);
+    toppageSection > 0 && toppageSection < 250
+      ? sect.classList.add("your-active-class")
+      : sect.classList.remove("your-active-class");
+    toppageSection > 0 && toppageSection < 250
+      ? activehyperLink.classList.add("activehyperLink")
+      : activehyperLink.classList.remove("activehyperLink");
   }
 });
