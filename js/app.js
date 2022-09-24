@@ -3,7 +3,7 @@
  *
  */
 const navUl = document.getElementById("navbar__list"),
-  sections = document.querySelectorAll("section"),
+  sections = document.getElementsByTagName("section"),
   fragment = document.createDocumentFragment();
 
 /**
@@ -11,19 +11,18 @@ const navUl = document.getElementById("navbar__list"),
  */
 
 // build nav
-function NavMenu() {
+function navMenu() {
   sections.forEach(function (section) {
-    const sectionID = section.getAttribute("id");
-    const sectionTitle = section.getAttribute("data-nav");
+    const idSection = section.getAttribute("id");
+    const titleSection = section.getAttribute("data-nav");
     const listItem = document.createElement("li");
     const link = document.createElement("a");
-    // set link  href to #sectionid
-    link.setAttribute("href", "#" + sectionID);
+    // set link  href to #idSect
+    link.href = `#${idSection}`;
     // class of link is "menu__link"
     link.classList.add("menu__link");
-    link.textContent = sectionTitle;
+    link.textContent = titleSection;
     // Scroll to section on link click
-
     link.addEventListener("click", function (e) {
       //prevent default behavior
       e.preventDefault();
@@ -40,19 +39,16 @@ function NavMenu() {
   navUl.appendChild(fragment);
 }
 //load the nav on load window
-window.addEventListener("load", NavMenu);
+window.addEventListener("load", navMenu);
 // End Nav
-//set maximum top value
-const maxTop = 250;
-//set minimum top value
-const minTop = 0;
+
 // Scroll to anchor ID using scrollTO event
 window.addEventListener("scroll", function () {
   for (const section of sections) {
     // Detect the element location relative to the viewport using .getBoundingClientRect()
-    const sectionTop = section.getBoundingClientRect().top;
+    const topSection = section.getBoundingClientRect().top;
     const activeLink = navUl.querySelector(`a[href='#${section.id}']`);
-    if (sectionTop > minTop && sectionTop < maxTop) {
+    if (topSection > 0 && topSection < 250) {
       // Add class 'your-active-class' to section when near top of viewport
       section.classList.add("your-active-class");
       // Add class 'activeLink' to link when near top of viewport
@@ -61,7 +57,7 @@ window.addEventListener("scroll", function () {
       // Add remove 'your-active-class' to section when near top of viewport
       section.classList.remove("your-active-class");
       // remove class 'activeLink' to link when near top of viewport
-      activeLink.classList.add("activeLink");
+      activeLink.classList.remove("activeLink");
     }
   }
 });
